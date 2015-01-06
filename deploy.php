@@ -1,23 +1,39 @@
 <?php
 /**
- * Simple PHP Git deploy script
+ * Deployment configuration
  *
- * Automatically deploy the code using PHP and Git.
+ * It's preferable to configure the script using this file istead of directly.
+ *
+ * Rename this file to `deploy-config.php` and edit the
+ * configuration options here instead of directly in `deploy.php`.
+ * That way, you won't have to edit the configuration again if you download the
+ * new version of `deploy.php`.
  *
  * @version 1.3.1
- * @link    https://github.com/markomarkovic/simple-php-git-deploy/
- */
-
-// =========================================[ Configuration start ]===
-
-/**
- * It's preferable to configure the script using `deploy-config.php` file.
  *
- * Rename `deploy-config.example.php` to `deploy-config.php` and edit the
- * configuration options there instead of here. That way, you won't have to edit
- * the configuration again if you download the new version of `deploy.php`.
+ * The MIT License
+ *
+ * Copyright (c) 2013 Marko Markovic <okram (at) civokram (dot) com>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
  */
-if (file_exists(basename(__FILE__, '.php').'-config.php')) require_once basename(__FILE__, '.php').'-config.php';
 
 /**
  * Protect the script from unauthorized access by using a secret access token.
@@ -26,7 +42,7 @@ if (file_exists(basename(__FILE__, '.php').'-config.php')) require_once basename
  *
  * @var string
  */
-if (!defined('SECRET_ACCESS_TOKEN')) define('SECRET_ACCESS_TOKEN', 'BetterChangeMeNowOrSufferTheConsequences');
+define('SECRET_ACCESS_TOKEN', 'BetterChangeMeNowOrSufferTheConsequences');
 
 /**
  * The address of the remote Git repository that contains the code that's being
@@ -35,7 +51,7 @@ if (!defined('SECRET_ACCESS_TOKEN')) define('SECRET_ACCESS_TOKEN', 'BetterChange
  *
  * @var string
  */
-if (!defined('REMOTE_REPOSITORY')) define('REMOTE_REPOSITORY', 'https://github.com/markomarkovic/simple-php-git-deploy.git');
+define('REMOTE_REPOSITORY', 'https://github.com/mrl22/simple-php-git-deploy.git');
 
 /**
  * The branch that's being deployed.
@@ -43,7 +59,7 @@ if (!defined('REMOTE_REPOSITORY')) define('REMOTE_REPOSITORY', 'https://github.c
  *
  * @var string
  */
-if (!defined('BRANCH')) define('BRANCH', 'master');
+define('BRANCH', 'master');
 
 /**
  * The location that the code is going to be deployed to.
@@ -51,7 +67,7 @@ if (!defined('BRANCH')) define('BRANCH', 'master');
  *
  * @var string Full path including the trailing slash
  */
-if (!defined('TARGET_DIR')) define('TARGET_DIR', '/tmp/simple-php-git-deploy/');
+define('TARGET_DIR', '/tmp/simple-php-git-deploy/');
 
 /**
  * Whether to delete the files that are not in the repository but are on the
@@ -64,7 +80,7 @@ if (!defined('TARGET_DIR')) define('TARGET_DIR', '/tmp/simple-php-git-deploy/');
  *
  * @var boolean
  */
-if (!defined('DELETE_FILES')) define('DELETE_FILES', false);
+define('DELETE_FILES', false);
 
 /**
  * The directories and files that are to be excluded when updating the code.
@@ -74,7 +90,7 @@ if (!defined('DELETE_FILES')) define('DELETE_FILES', false);
  *
  * @var serialized array of strings
  */
-if (!defined('EXCLUDE')) define('EXCLUDE', serialize(array(
+define('EXCLUDE', serialize(array(
 	'.git',
 )));
 
@@ -86,28 +102,28 @@ if (!defined('EXCLUDE')) define('EXCLUDE', serialize(array(
  *
  * @var string Full path including the trailing slash
  */
-if (!defined('TMP_DIR')) define('TMP_DIR', '/tmp/spgd-'.md5(REMOTE_REPOSITORY).'/');
+define('TMP_DIR', '/tmp/spgd-'.md5(REMOTE_REPOSITORY).'/');
 
 /**
  * Whether to remove the TMP_DIR after the deployment.
  * It's useful NOT to clean up in order to only fetch changes on the next
  * deployment.
  */
-if (!defined('CLEAN_UP')) define('CLEAN_UP', true);
+define('CLEAN_UP', true);
 
 /**
  * Output the version of the deployed code.
  *
  * @var string Full path to the file name
  */
-if (!defined('VERSION_FILE')) define('VERSION_FILE', TMP_DIR.'VERSION');
+define('VERSION_FILE', TMP_DIR.'VERSION');
 
 /**
  * Time limit for each command.
  *
  * @var int Time in seconds
  */
-if (!defined('TIME_LIMIT')) define('TIME_LIMIT', 30);
+define('TIME_LIMIT', 30);
 
 /**
  * OPTIONAL
@@ -115,7 +131,7 @@ if (!defined('TIME_LIMIT')) define('TIME_LIMIT', 30);
  *
  * @var string Full backup directory path e.g. `/tmp/`
  */
-if (!defined('BACKUP_DIR')) define('BACKUP_DIR', false);
+define('BACKUP_DIR', false);
 
 /**
  * OPTIONAL
@@ -126,7 +142,7 @@ if (!defined('BACKUP_DIR')) define('BACKUP_DIR', false);
  * @var boolean Whether to use composer or not
  * @link http://getcomposer.org/
  */
-if (!defined('USE_COMPOSER')) define('USE_COMPOSER', false);
+define('USE_COMPOSER', false);
 
 /**
  * OPTIONAL
@@ -135,7 +151,7 @@ if (!defined('USE_COMPOSER')) define('USE_COMPOSER', false);
  * @var string Composer options
  * @link http://getcomposer.org/doc/03-cli.md#install
  */
-if (!defined('COMPOSER_OPTIONS')) define('COMPOSER_OPTIONS', '--no-dev');
+define('COMPOSER_OPTIONS', '--no-dev');
 
 /**
  * OPTIONAL
@@ -145,7 +161,7 @@ if (!defined('COMPOSER_OPTIONS')) define('COMPOSER_OPTIONS', '--no-dev');
  * @var string Path to the COMPOSER_HOME e.g. `/tmp/composer`
  * @link https://getcomposer.org/doc/03-cli.md#composer-home
  */
-if (!defined('COMPOSER_HOME')) define('COMPOSER_HOME', false);
+define('COMPOSER_HOME', false);
 
 /**
  * OPTIONAL
@@ -153,7 +169,8 @@ if (!defined('COMPOSER_HOME')) define('COMPOSER_HOME', false);
  *
  * @var string Email address
  */
-if (!defined('EMAIL_ON_ERROR')) define('EMAIL_ON_ERROR', false);
+define('EMAIL_ON_ERROR', false);
+
 
 // ===========================================[ Configuration end ]===
 
