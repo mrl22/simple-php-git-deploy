@@ -59,7 +59,7 @@ define('REMOTE_REPOSITORY', 'https://github.com/mrl22/simple-php-git-deploy.git'
  *
  * @var string
  */
-define('BRANCH', 'master');
+define('BRANCH', $_GET['branch']?$_GET['branch']:'master');
 
 /**
  * The location that the code is going to be deployed to.
